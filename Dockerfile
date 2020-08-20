@@ -2,9 +2,6 @@ ARG ubuntu_version
 FROM ubuntu:ubuntu_version
 
 
-ARG python_version
-
-
 RUN apt-get update \
 	&& apt-get -o Dpkg::Use-Pty=0 --no-install-recommends -y install \
 		git build-essential ca-certificates wget libpq-dev libssl-dev \
@@ -33,6 +30,7 @@ COPY requirements.txt ./
 
 ENV PYENV_ROOT=/root/.pyenv
 ENV PATH=$PYENV_ROOT/bin:$PATH
+ARG python_version
 RUN eval "$(pyenv init -)" && \
 	eval "$(pyenv virtualenv-init -)" && \
 	pyenv install $python_version && \

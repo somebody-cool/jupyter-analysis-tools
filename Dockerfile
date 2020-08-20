@@ -1,8 +1,7 @@
-FROM ubuntu:20.04
+ARG ubuntu_version
+FROM ubuntu:ubuntu_version
 
 
-ARG pyenv_commit_hash
-ARG pyenv_virtualenv_commit_hash
 ARG python_version
 
 
@@ -17,14 +16,12 @@ RUN apt-get update \
 
 RUN git clone https://github.com/pyenv/pyenv.git /root/.pyenv
 WORKDIR /root/.pyenv
-RUN git checkout $pyenv_commit_hash
 RUN echo 'export PYENV_ROOT="/root/.pyenv"' >> /root/.bashrc
 RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> /root/.bashrc
 
 
 RUN git clone https://github.com/pyenv/pyenv-virtualenv.git /root/.pyenv/plugins/pyenv-virtualenv
 WORKDIR /root/.pyenv/plugins/pyenv-virtualenv
-RUN git checkout $pyenv_virtualenv_commit_hash
 RUN echo 'eval "$(pyenv init -)"' >> /root/.bashrc
 RUN echo 'eval "$(pyenv virtualenv-init -)"' >> /root/.bashrc
 RUN echo 'pyenv activate current' >> /root/.bashrc

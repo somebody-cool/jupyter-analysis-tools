@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: postgres:12.3
+    image: postgres:$POSTGRES_VERSION
     volumes:
       - /var/lib/postgresql/data
     ports:
@@ -17,9 +17,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        pyenv_commit_hash: $PYENV_COMMIT_HASH
-        pyenv_virtualenv_commit_hash: $PYENV_VIRTUALENV_COMMIT_HASH
         python_version: $PYTHON_VERSION
+        ubuntu_version: $UBUNTU_VERSION
     env_file: .env.local
     volumes:
       - .:/usr/src/app

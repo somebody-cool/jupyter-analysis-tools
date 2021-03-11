@@ -1,9 +1,23 @@
 version: '3'
 
 services:
+  munge_data:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PYTHON_VERSION: $PYTHON_VERSION
+        UBUNTU_VERSION: $UBUNTU_VERSION
+    env_file: .env.local
+    volumes:
+      - .:/usr/src/app
+    command: >
+      bash -i -c "python munge.py"
   db:
     image: postgres:$POSTGRES_VERSION
     volumes:
+      - ./data:/usr/data:ro
+      - ./data_load.sql:/docker-entrypoint-initdb.d/data_load.sql:ro
       - /var/lib/postgresql/data
     ports:
       - "5432:5432"
@@ -17,8 +31,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        python_version: $PYTHON_VERSION
-        ubuntu_version: $UBUNTU_VERSION
+        PYTHON_VERSION: $PYTHON_VERSION
+        UBUNTU_VERSION: $UBUNTU_VERSION
     env_file: .env.local
     volumes:
       - .:/usr/src/app
@@ -27,10 +41,4 @@ services:
     depends_on:
       - db
     command: >
-      bash -c "
-      export PYENV_ROOT=\"/root/.pyenv\"
-      && export PATH=\"$$PYENV_ROOT/bin:$$PATH\"
-      && eval \"$$(pyenv init -)\"
-      && eval \"$$(pyenv virtualenv-init -)\"
-      && pyenv activate current
-      && jupyter notebook --ip=0.0.0.0 --no-browser --allow-root --NotebookApp.token=''"
+      bash -i -c "jupyter notebook --ip=0.0.0.0 --no-browser --allow-root --NotebookApp.token=''"

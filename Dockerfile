@@ -1,5 +1,5 @@
-ARG ubuntu_version
-FROM ubuntu:ubuntu_version
+ARG UBUNTU_VERSION
+FROM ubuntu:${UBUNTU_VERSION}
 
 
 RUN apt-get update \
@@ -21,7 +21,6 @@ RUN git clone https://github.com/pyenv/pyenv-virtualenv.git /root/.pyenv/plugins
 WORKDIR /root/.pyenv/plugins/pyenv-virtualenv
 RUN echo 'eval "$(pyenv init -)"' >> /root/.bashrc
 RUN echo 'eval "$(pyenv virtualenv-init -)"' >> /root/.bashrc
-RUN echo 'pyenv activate current' >> /root/.bashrc
 
 
 WORKDIR /usr/src/app
@@ -30,13 +29,10 @@ COPY requirements.txt ./
 
 ENV PYENV_ROOT=/root/.pyenv
 ENV PATH=$PYENV_ROOT/bin:$PATH
-ARG python_version
-RUN eval "$(pyenv init -)" && \
-	eval "$(pyenv virtualenv-init -)" && \
-	pyenv install $python_version && \
-	pyenv virtualenv $python_version current
-RUN eval "$(pyenv init -)" && \
-	eval "$(pyenv virtualenv-init -)" && \
-	pyenv activate current && \
-	pip install --upgrade pip && \
-	pip install -r requirements.txt
+ARG PYTHON_VERSION
+RUN bash -i -c "pyenv install ${PYTHON_VERSION} \
+	&& pyenv virtualenv ${PYTHON_VERSION} current \
+	&& pyenv activate current \
+	&& pip install --upgrade pip \
+	&& pip install -r requirements.txt"
+RUN echo 'pyenv activate current' >> /root/.bashrc

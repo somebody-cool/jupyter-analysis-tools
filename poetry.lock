@@ -354,10 +354,7 @@ optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-numpy = [
-    {version = ">=1.17.5", markers = "python_version == \"3.8\""},
-    {version = ">=1.19.3", markers = "python_version >= \"3.9\""},
-]
+numpy = {version = ">=1.19.3", markers = "python_version >= \"3.9\""}
 
 [[package]]
 name = "httpstan"
@@ -1631,8 +1628,8 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.8"
-content-hash = "5206a7db937bb59da94925b814630d9656814c43062bd8929c7f33ab8bbf9a76"
+python-versions = "^3.9.5"
+content-hash = "24b86bef1c1f52a3d88bda50181853934f39217514315f69387195334b791698"
 
 [metadata.files]
 absl-py = [

@@ -15,24 +15,21 @@ RUN git clone https://github.com/pyenv/pyenv.git /root/.pyenv
 WORKDIR /root/.pyenv
 RUN echo 'export PYENV_ROOT="/root/.pyenv"' >> /root/.bashrc
 RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> /root/.bashrc
-
-
-RUN git clone https://github.com/pyenv/pyenv-virtualenv.git /root/.pyenv/plugins/pyenv-virtualenv
-WORKDIR /root/.pyenv/plugins/pyenv-virtualenv
+RUN echo 'eval "$(pyenv init --path)"' >> /root/.bashrc
 RUN echo 'eval "$(pyenv init -)"' >> /root/.bashrc
-RUN echo 'eval "$(pyenv virtualenv-init -)"' >> /root/.bashrc
 
 
 WORKDIR /usr/src/app
-COPY requirements.txt ./
+COPY pyproject.toml ./
+COPY poetry.lock ./
 
 
 ENV PYENV_ROOT=/root/.pyenv
 ENV PATH=$PYENV_ROOT/bin:$PATH
 ARG PYTHON_VERSION
+ENV PYENV_VERSION=${PYTHON_VERSION}
 RUN bash -i -c "pyenv install ${PYTHON_VERSION} \
-	&& pyenv virtualenv ${PYTHON_VERSION} current \
-	&& pyenv activate current \
-	&& pip install --upgrade pip \
-	&& pip install -r requirements.txt"
-RUN echo 'pyenv activate current' >> /root/.bashrc
+	&& curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py \
+	| python -"
+RUN echo 'export PATH="$HOME/.poetry/bin:$PATH"' >> /root/.bashrc
+RUN bash -i -c "poetry install"

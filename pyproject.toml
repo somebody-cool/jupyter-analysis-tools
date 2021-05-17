@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "jupyter-analysis"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+bokeh = "^2.3.2"
+jupyter = "^1.0.0"
+jupyterstan = "^0.2.0"
+numpy = "*"
+ortools = "^9.0.9048"
+pandas = "^1.2.4"
+plotnine = "^0.8.0"
+psycopg2 = "^2.8.6"
+pystan = "^3.1.1"
+scikit-learn = "^0.24.2"
+scipy = "*"
+statsmodels = "^0.12.2"
+tensorflow = "^2.5.0"
+tensorflow-probability = "^0.12.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

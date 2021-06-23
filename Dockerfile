@@ -10,6 +10,13 @@ RUN apt-get update \
 		liblzma-dev python-openssl \
 	&& rm -rf /var/lib/apt/lists/*
 
+ARG CMDSTAN_VERSION
+RUN wget https://github.com/stan-dev/cmdstan/releases/download/v${CMDSTAN_VERSION}/cmdstan-${CMDSTAN_VERSION}.tar.gz
+RUN tar -xvzf cmdstan-${CMDSTAN_VERSION}.tar.gz --directory /root/
+WORKDIR /root/cmdstan-${CMDSTAN_VERSION}
+RUN make build
+ENV CMDSTAN=/root/cmdstan-${CMDSTAN_VERSION}
+
 
 RUN git clone https://github.com/pyenv/pyenv.git /root/.pyenv
 WORKDIR /root/.pyenv

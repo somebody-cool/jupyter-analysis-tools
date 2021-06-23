@@ -6,10 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
+        CMDSTAN_VERSION: $CMDSTAN_VERSION
         PYTHON_VERSION: $PYTHON_VERSION
         UBUNTU_VERSION: $UBUNTU_VERSION
-    environment:
-      PYENV_VERSION: $PYTHON_VERSION
     env_file: .env.local
     volumes:
       - .:/usr/src/app
@@ -33,11 +32,10 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
+        CMDSTAN_VERSION: $CMDSTAN_VERSION
         PYTHON_VERSION: $PYTHON_VERSION
         UBUNTU_VERSION: $UBUNTU_VERSION
     env_file: .env.local
-    environment:
-      PYENV_VERSION: $PYTHON_VERSION
     volumes:
       - .:/usr/src/app
     ports:
